@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcombinedvalues.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2017 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,7 +19,7 @@
  * @author     Andreas Isaak <andy.jared@googlemail.com>
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2016 The MetaModels team.
+ * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
  */
@@ -74,6 +74,11 @@ class TranslatedCombinedValues extends TranslatedReference
         // we do not need to set mandatory, as we will automatically update our value when isunique is given.
         if ($this->get('isunique')) {
             $arrFieldDef['eval']['mandatory'] = false;
+        }
+
+        // If "force_combinedvalues" is ture set alwaysSave to true.
+        if ($this->get('force_combinedvalues')) {
+            $arrFieldDef['eval']['alwaysSave'] = true;
         }
 
         return $arrFieldDef;
