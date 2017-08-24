@@ -8,10 +8,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * The MetaModels extension allows the creation of multiple collections of custom items,
- * each with its own unique set of selectable attributes, with attribute extendability.
- * The Front-End modules allow you to build powerful listing and filtering of the
- * data in each collection.
+ * This project is provided in good faith and hope to be usable by anyone.
  *
  * @package    MetaModels
  * @subpackage AttributeTranslatedCombinedValues
@@ -19,6 +16,7 @@
  * @author     Andreas Isaak <andy.jared@googlemail.com>
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     Ingolf Steinhardt <info@e-spin.de>
  * @copyright  2012-2017 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0
  * @filesource
@@ -76,9 +74,10 @@ class TranslatedCombinedValues extends TranslatedReference
             $arrFieldDef['eval']['mandatory'] = false;
         }
 
-        // If "force_combinedvalues" is ture set alwaysSave to true.
+        // If "force_combinedvalues" is true set alwaysSave and readonly to true.
         if ($this->get('force_combinedvalues')) {
             $arrFieldDef['eval']['alwaysSave'] = true;
+            $arrFieldDef['eval']['readonly']   = true;
         }
 
         return $arrFieldDef;
@@ -126,6 +125,18 @@ class TranslatedCombinedValues extends TranslatedReference
 
         $this->setTranslatedDataFor(array($objItem->get('id') => $arrData), $this->getMetaModel()->getActiveLanguage());
         $objItem->set($this->getColName(), $arrData);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function get($strKey)
+    {
+        if ($strKey == 'force_alias') {
+            $strKey = 'force_combinedvalues';
+        }
+
+        return parent::get($strKey);
     }
 
     /**
