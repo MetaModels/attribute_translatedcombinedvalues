@@ -1,0 +1,12 @@
+services:
+    metamodels.attribute_translatedcombinedvalues.listeners.get_options:
+        class: MetaModels\DcGeneral\Events\Table\Attribute\TranslatedCombinedValues\GetOptionsListener
+        arguments:
+          - "@metamodels.factory"
+          - "%metamodels.system_columns%"
+        tags:
+          - {
+              name: kernel.event_listener,
+              event: 'men-at-work.multi-column-wizard.get-options',
+              method: getOptions
+            }
