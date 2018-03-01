@@ -1,6 +1,6 @@
 services:
     metamodels.attribute_translatedcombinedvalues.listeners.get_options:
-        class: MetaModels\DcGeneral\Events\Table\Attribute\TranslatedCombinedValues\GetOptionsListener
+        class: MetaModels\AttributeTranslatedCombinedValuesBundle\EventListener\GetOptionsListener
         arguments:
           - "@metamodels.factory"
           - "%metamodels.system_columns%"
