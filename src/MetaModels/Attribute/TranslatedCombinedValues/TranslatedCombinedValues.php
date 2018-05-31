@@ -49,7 +49,7 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(
+        return \array_merge(
             parent::getAttributeSettingNames(),
             [
                 'combinedvalues_fields',
@@ -97,7 +97,7 @@ class TranslatedCombinedValues extends TranslatedReference
         }
 
         $arrCombinedValues = [];
-        foreach (deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
+        foreach (\deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
                 $arrCombinedValues[] = $objItem->get($strField);
@@ -107,8 +107,8 @@ class TranslatedCombinedValues extends TranslatedReference
             }
         }
 
-        $strCombinedValues = vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
-        $strCombinedValues = trim($strCombinedValues);
+        $strCombinedValues = \vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
+        $strCombinedValues = \trim($strCombinedValues);
 
         // we need to fetch the attribute values for all attribs in the combinedvalues_fields and update the database
         // and the model accordingly.
@@ -118,7 +118,7 @@ class TranslatedCombinedValues extends TranslatedReference
             $strBaseCombinedValues = $strCombinedValues;
             $arrIds                = [$objItem->get('id')];
             $intCount              = 2;
-            while (array_diff($this->searchForInLanguages($strCombinedValues, [$strLanguage]), $arrIds)) {
+            while (\array_diff($this->searchForInLanguages($strCombinedValues, [$strLanguage]), $arrIds)) {
                 $intCount++;
                 $strCombinedValues = $strBaseCombinedValues .' ('.$intCount.')';
             }
@@ -151,9 +151,9 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     protected function isMetaField($strField)
     {
-        $strField = trim($strField);
+        $strField = \trim($strField);
 
-        if (in_array($strField, $this->getMetaModelsSystemColumns())) {
+        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
             return true;
         }
 
