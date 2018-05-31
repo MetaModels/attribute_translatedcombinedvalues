@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcombinedvalues.
  *
- * (c) 2012-2016 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -19,8 +19,8 @@
  * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Sven Baumann <baumann.sv@gmail.com>
- * @copyright  2012-2016 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -41,7 +41,7 @@ class Subscriber extends BaseSubscriber
     {
         $this->addListener(
             GetOptionsEvent::NAME,
-            array($this, 'getOptions')
+            [$this, 'getOptions']
         );
     }
 
@@ -68,7 +68,7 @@ class Subscriber extends BaseSubscriber
             return;
         }
 
-        $result = array();
+        $result = [];
         // Add meta fields.
         $result['meta'] = self::getMetaModelsSystemColumns();
 
@@ -87,7 +87,7 @@ class Subscriber extends BaseSubscriber
                 $type = $attribute->get('type');
             }
 
-            $result['attributes'][$attribute->getColName()] = sprintf(
+            $result['attributes'][$attribute->getColName()] = \sprintf(
                 '%s [%s]',
                 $attribute->getName(),
                 $type

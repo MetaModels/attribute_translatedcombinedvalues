@@ -10,8 +10,9 @@
  * @subpackage Tests
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     David Greminger <david.greminger@1up.io>
+ * @author     Sven Baumann <baumann.sv@gmail.com>
  * @copyright  The MetaModels team.
- * @license    LGPL.
+ * @license    LGPL-3.0-or-later
  * @filesource
  */
 
@@ -21,6 +22,8 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\TranslatedCombinedValues\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\MetaModel;
+use MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues;
 
 /**
  * Test the attribute factory.
@@ -40,11 +43,7 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends AttributeTypeFact
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())
@@ -83,10 +82,10 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends AttributeTypeFact
     {
         $factory   = new AttributeTypeFactory();
         $attribute = $factory->createInstance(
-            array(),
+            [],
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues', $attribute);
+        $this->assertInstanceOf(TranslatedCombinedValues::class, $attribute);
     }
 }

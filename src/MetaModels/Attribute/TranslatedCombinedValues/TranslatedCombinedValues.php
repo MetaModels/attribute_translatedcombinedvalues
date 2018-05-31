@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcombinedvalues.
  *
- * (c) 2012-2017 The MetaModels team.
+ * (c) 2012-2018 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,8 +17,8 @@
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2017 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0
+ * @copyright  2012-2018 The MetaModels team.
+ * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -49,21 +49,24 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(parent::getAttributeSettingNames(), array(
-            'combinedvalues_fields',
-            'combinedvalues_format',
-            'force_combinedvalues',
-            'isunique',
-            'mandatory',
-            'filterable',
-            'searchable',
-        ));
+        return \array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'combinedvalues_fields',
+                'combinedvalues_format',
+                'force_combinedvalues',
+                'isunique',
+                'mandatory',
+                'filterable',
+                'searchable',
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
@@ -93,8 +96,8 @@ class TranslatedCombinedValues extends TranslatedReference
             return;
         }
 
-        $arrCombinedValues = array();
-        foreach (deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
+        $arrCombinedValues = [];
+        foreach (\deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
                 $arrCombinedValues[] = $objItem->get($strField);
@@ -104,8 +107,8 @@ class TranslatedCombinedValues extends TranslatedReference
             }
         }
 
-        $strCombinedValues = vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
-        $strCombinedValues = trim($strCombinedValues);
+        $strCombinedValues = \vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
+        $strCombinedValues = \trim($strCombinedValues);
 
         // we need to fetch the attribute values for all attribs in the combinedvalues_fields and update the database
         // and the model accordingly.
@@ -113,9 +116,9 @@ class TranslatedCombinedValues extends TranslatedReference
             // ensure uniqueness.
             $strLanguage           = $this->getMetaModel()->getActiveLanguage();
             $strBaseCombinedValues = $strCombinedValues;
-            $arrIds                = array($objItem->get('id'));
+            $arrIds                = [$objItem->get('id')];
             $intCount              = 2;
-            while (array_diff($this->searchForInLanguages($strCombinedValues, array($strLanguage)), $arrIds)) {
+            while (\array_diff($this->searchForInLanguages($strCombinedValues, [$strLanguage]), $arrIds)) {
                 $intCount++;
                 $strCombinedValues = $strBaseCombinedValues .' ('.$intCount.')';
             }
@@ -123,7 +126,7 @@ class TranslatedCombinedValues extends TranslatedReference
 
         $arrData = $this->widgetToValue($strCombinedValues, $objItem->get('id'));
 
-        $this->setTranslatedDataFor(array($objItem->get('id') => $arrData), $this->getMetaModel()->getActiveLanguage());
+        $this->setTranslatedDataFor([$objItem->get('id') => $arrData], $this->getMetaModel()->getActiveLanguage());
         $objItem->set($this->getColName(), $arrData);
     }
 
@@ -148,9 +151,9 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     protected function isMetaField($strField)
     {
-        $strField = trim($strField);
+        $strField = \trim($strField);
 
-        if (in_array($strField, $this->getMetaModelsSystemColumns())) {
+        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
             return true;
         }
 
