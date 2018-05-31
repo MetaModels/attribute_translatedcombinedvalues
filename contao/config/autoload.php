@@ -28,6 +28,8 @@
 /**
  * Register the templates
  */
-TemplateLoader::addFiles(array(
-    'mm_attr_translatedcombinedvalues' => 'system/modules/metamodelsattribute_translatedcombinedvalues/templates',
-));
+TemplateLoader::addFiles(
+    [
+        'mm_attr_translatedcombinedvalues' => 'system/modules/metamodelsattribute_translatedcombinedvalues/templates',
+    ]
+);

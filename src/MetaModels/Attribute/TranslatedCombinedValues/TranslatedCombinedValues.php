@@ -49,21 +49,24 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return array_merge(parent::getAttributeSettingNames(), array(
-            'combinedvalues_fields',
-            'combinedvalues_format',
-            'force_combinedvalues',
-            'isunique',
-            'mandatory',
-            'filterable',
-            'searchable',
-        ));
+        return array_merge(
+            parent::getAttributeSettingNames(),
+            [
+                'combinedvalues_fields',
+                'combinedvalues_format',
+                'force_combinedvalues',
+                'isunique',
+                'mandatory',
+                'filterable',
+                'searchable',
+            ]
+        );
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getFieldDefinition($arrOverrides = array())
+    public function getFieldDefinition($arrOverrides = [])
     {
         $arrFieldDef = parent::getFieldDefinition($arrOverrides);
 
@@ -93,7 +96,7 @@ class TranslatedCombinedValues extends TranslatedReference
             return;
         }
 
-        $arrCombinedValues = array();
+        $arrCombinedValues = [];
         foreach (deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
@@ -113,9 +116,9 @@ class TranslatedCombinedValues extends TranslatedReference
             // ensure uniqueness.
             $strLanguage           = $this->getMetaModel()->getActiveLanguage();
             $strBaseCombinedValues = $strCombinedValues;
-            $arrIds                = array($objItem->get('id'));
+            $arrIds                = [$objItem->get('id')];
             $intCount              = 2;
-            while (array_diff($this->searchForInLanguages($strCombinedValues, array($strLanguage)), $arrIds)) {
+            while (array_diff($this->searchForInLanguages($strCombinedValues, [$strLanguage]), $arrIds)) {
                 $intCount++;
                 $strCombinedValues = $strBaseCombinedValues .' ('.$intCount.')';
             }
@@ -123,7 +126,7 @@ class TranslatedCombinedValues extends TranslatedReference
 
         $arrData = $this->widgetToValue($strCombinedValues, $objItem->get('id'));
 
-        $this->setTranslatedDataFor(array($objItem->get('id') => $arrData), $this->getMetaModel()->getActiveLanguage());
+        $this->setTranslatedDataFor([$objItem->get('id') => $arrData], $this->getMetaModel()->getActiveLanguage());
         $objItem->set($this->getColName(), $arrData);
     }
 

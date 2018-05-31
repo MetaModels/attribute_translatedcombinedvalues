@@ -41,11 +41,7 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends AttributeTypeFact
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(
-            'MetaModels\MetaModel',
-            array(),
-            array(array())
-        );
+        $metaModel = $this->getMock('MetaModels\MetaModel', [], [[]]);
 
         $metaModel
             ->expects($this->any())
@@ -84,7 +80,7 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends AttributeTypeFact
     {
         $factory   = new AttributeTypeFactory();
         $attribute = $factory->createInstance(
-            array(),
+            [],
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 

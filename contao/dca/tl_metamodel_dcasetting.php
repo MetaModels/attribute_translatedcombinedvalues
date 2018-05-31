@@ -24,15 +24,15 @@
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['translatedcombinedvalues'] = array(
-    'presentation' => array(
+$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['translatedcombinedvalues'] = [
+    'presentation' => [
         'tl_class',
-    ),
-    'functions'  => array(
+    ],
+    'functions'    => [
         'mandatory',
-    ),
-    'overview' => array(
+    ],
+    'overview'     => [
         'filterable',
         'searchable',
-    ),
-);
+    ],
+];
