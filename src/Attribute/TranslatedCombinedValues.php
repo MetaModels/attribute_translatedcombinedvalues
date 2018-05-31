@@ -75,7 +75,7 @@ class TranslatedCombinedValues extends TranslatedReference
 
         if (null === $tableManipulator) {
             // @codingStandardsIgnoreStart
-            @trigger_error(
+            @\trigger_error(
                 'Table manipulator argument is missing. Fallback will be dropped in MetaModels 3.',
                 E_USER_DEPRECATED
             );

@@ -26,6 +26,7 @@ namespace MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\AbstractAttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
+use MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\TranslatedCombinedValues;
 
 /**
  * Attribute type factory for translated combined values attributes.
@@ -58,7 +59,7 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
 
         $this->typeName  = 'translatedcombinedvalues';
         $this->typeIcon  = 'bundles/metamodelsattributetranslatedcombinedvalues/combinedvalues.png';
-        $this->typeClass = 'MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\TranslatedCombinedValues';
+        $this->typeClass = TranslatedCombinedValues::class;
 
         $this->connection       = $connection;
         $this->tableManipulator = $tableManipulator;
