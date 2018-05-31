@@ -20,11 +20,12 @@ namespace MetaModels\Test\Attribute\TranslatedCombinedValues;
 
 use MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues;
 use MetaModels\MetaModel;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Unit tests to test class GeoProtection.
  */
-class TranslatedCombinedValuesTest extends \PHPUnit_Framework_TestCase
+class TranslatedCombinedValuesTest extends TestCase
 {
     /**
      * Mock a MetaModel.
@@ -36,7 +37,7 @@ class TranslatedCombinedValuesTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock(MetaModel::class, [], [[]]);
+        $metaModel = $this->getMockBuilder(MetaModel::class)->setMethods([])->setConstructorArgs([[]])->getMock();
 
         $metaModel
             ->expects($this->any())
