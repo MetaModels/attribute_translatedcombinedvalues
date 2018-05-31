@@ -21,19 +21,19 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2018 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0
+ * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['translatedcombinedvalues'] = array(
-    'presentation' => array(
+$GLOBALS['TL_DCA']['tl_metamodel_dcasetting']['metasubselectpalettes']['attr_id']['translatedcombinedvalues'] = [
+    'presentation' => [
         'tl_class',
-    ),
-    'functions'  => array(
+    ],
+    'functions'    => [
         'mandatory',
-    ),
-    'overview' => array(
+    ],
+    'overview'     => [
         'filterable',
         'searchable',
-    ),
-);
+    ],
+];

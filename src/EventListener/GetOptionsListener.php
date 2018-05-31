@@ -16,7 +16,7 @@
  * @author     David Greminger <david.greminger@1up.io>
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2018 The MetaModels team.
- * @license    https://github.com/MetaModels/attribute_text/blob/master/LICENSE LGPL-3.0
+ * @license    https://github.com/MetaModels/attribute_text/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
@@ -79,7 +79,7 @@ class GetOptionsListener
             return;
         }
 
-        $result = array();
+        $result = [];
         // Add meta fields.
         $result['meta'] = self::getMetaModelsSystemColumns();
 
@@ -98,7 +98,7 @@ class GetOptionsListener
                 $type = $attribute->get('type');
             }
 
-            $result['attributes'][$attribute->getColName()] = sprintf(
+            $result['attributes'][$attribute->getColName()] = \sprintf(
                 '%s [%s]',
                 $attribute->getName(),
                 $type
