@@ -39,6 +39,6 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
         parent::__construct();
         $this->typeName  = 'translatedcombinedvalues';
         $this->typeIcon  = 'system/modules/metamodelsattribute_translatedcombinedvalues/html/combinedvalues.png';
-        $this->typeClass = 'MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues';
+        $this->typeClass = TranslatedCombinedValues::class;
     }
 }

@@ -19,6 +19,7 @@
 namespace MetaModels\Test\Attribute\TranslatedCombinedValues;
 
 use MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues;
+use MetaModels\MetaModel;
 
 /**
  * Unit tests to test class GeoProtection.
@@ -35,7 +36,7 @@ class TranslatedCombinedValuesTest extends \PHPUnit_Framework_TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock('MetaModels\MetaModel', [], [[]]);
+        $metaModel = $this->getMock(MetaModel::class, [], [[]]);
 
         $metaModel
             ->expects($this->any())
@@ -63,6 +64,6 @@ class TranslatedCombinedValuesTest extends \PHPUnit_Framework_TestCase
     public function testInstantiation()
     {
         $text = new TranslatedCombinedValues($this->mockMetaModel('en', 'en'));
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues', $text);
+        $this->assertInstanceOf(TranslatedCombinedValues::class, $text);
     }
 }

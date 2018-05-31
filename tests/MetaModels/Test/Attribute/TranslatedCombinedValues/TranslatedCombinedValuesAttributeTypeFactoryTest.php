@@ -22,6 +22,8 @@ use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Attribute\TranslatedCombinedValues\AttributeTypeFactory;
 use MetaModels\IMetaModel;
 use MetaModels\Test\Attribute\AttributeTypeFactoryTest;
+use MetaModels\MetaModel;
+use MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues;
 
 /**
  * Test the attribute factory.
@@ -41,7 +43,7 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends AttributeTypeFact
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMock('MetaModels\MetaModel', [], [[]]);
+        $metaModel = $this->getMock(MetaModel::class, [], [[]]);
 
         $metaModel
             ->expects($this->any())
@@ -84,6 +86,6 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends AttributeTypeFact
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues', $attribute);
+        $this->assertInstanceOf(TranslatedCombinedValues::class, $attribute);
     }
 }
