@@ -7,6 +7,6 @@ services:
         tags:
           - {
               name: kernel.event_listener,
-              event: 'men-at-work.multi-column-wizard.get-options',
+              event: 'men-at-work.multi-column-wizard-bundle.get-options',
               method: getOptions
             }

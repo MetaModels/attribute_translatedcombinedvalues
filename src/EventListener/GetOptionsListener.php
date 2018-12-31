@@ -22,8 +22,8 @@
 
 namespace MetaModels\AttributeTranslatedCombinedValuesBundle\EventListener;
 
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
 use MetaModels\IFactory;
-use MultiColumnWizard\Event\GetOptionsEvent;
 
 /**
  * Class GetOptionsListener
