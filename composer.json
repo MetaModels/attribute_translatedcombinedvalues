@@ -54,12 +54,6 @@
     "contao": {
       "symlinks": {
         "contao": "system/modules/metamodelsattribute_translatedcombinedvalues"
-      },
-      "transifex": {
-        "project": "metamodels",
-        "prefix": "attribute_translatedcombinedvalues-",
-        "languages_cto": "contao/languages",
-        "languages_tx": ".tx"
       }
     },
     "branch-alias": {
