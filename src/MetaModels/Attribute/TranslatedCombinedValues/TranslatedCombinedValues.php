@@ -27,11 +27,6 @@ use MetaModels\Attribute\TranslatedReference;
 
 /**
  * This is the MetaModelAttribute class for handling combined values.
- *
- * @package    MetaModels
- * @subpackage TranslatedCombinedValues
- * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
  */
 class TranslatedCombinedValues extends TranslatedReference
 {
