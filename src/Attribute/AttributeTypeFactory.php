@@ -13,6 +13,7 @@
  * @package    MetaModels/attribute_translatedcombinedvalues
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -21,14 +22,13 @@
 namespace MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute;
 
 use Doctrine\DBAL\Connection;
-use MetaModels\Attribute\AbstractAttributeTypeFactory;
+use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\Helper\TableManipulator;
-use MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\TranslatedCombinedValues;
 
 /**
  * Attribute type factory for translated combined values attributes.
  */
-class AttributeTypeFactory extends AbstractAttributeTypeFactory
+class AttributeTypeFactory implements IAttributeTypeFactory
 {
     /**
      * Database connection.
@@ -52,14 +52,24 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
      */
     public function __construct(Connection $connection, TableManipulator $tableManipulator)
     {
-        parent::__construct();
-
-        $this->typeName  = 'translatedcombinedvalues';
-        $this->typeIcon  = 'bundles/metamodelsattributetranslatedcombinedvalues/combinedvalues.png';
-        $this->typeClass = TranslatedCombinedValues::class;
-
         $this->connection       = $connection;
         $this->tableManipulator = $tableManipulator;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTypeName()
+    {
+        return 'translatedcombinedvalues';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTypeIcon()
+    {
+        return 'bundles/metamodelsattributetranslatedcombinedvalues/combinedvalues.png';
     }
 
     /**
@@ -68,5 +78,29 @@ class AttributeTypeFactory extends AbstractAttributeTypeFactory
     public function createInstance($information, $metaModel)
     {
         return new TranslatedCombinedValues($metaModel, $information, $this->connection, $this->tableManipulator);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isTranslatedType()
+    {
+        return true;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isSimpleType()
+    {
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function isComplexType()
+    {
+        return true;
     }
 }
