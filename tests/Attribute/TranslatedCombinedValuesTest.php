@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/attribute_translatedcombinedvalues
  * @author     David Molineus <david.molineus@netzmacht.de>
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -23,7 +24,7 @@ use Doctrine\DBAL\Connection;
 use MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\TranslatedCombinedValues;
 use MetaModels\Helper\TableManipulator;
 use PHPUnit\Framework\TestCase;
-
+use MetaModels\IMetaModel;
 
 /**
  * Unit tests to test class GeoProtection.
@@ -40,22 +41,19 @@ class TranslatedCombinedValuesTest extends TestCase
      */
     protected function mockMetaModel($language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
+        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
-            ->expects($this->any())
             ->method('getTableName')
-            ->will($this->returnValue('mm_unittest'));
+            ->willReturn('mm_unittest');
 
         $metaModel
-            ->expects($this->any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -71,9 +69,11 @@ class TranslatedCombinedValuesTest extends TestCase
         $manipulator = $this->mockTableManipulator($connection);
 
         $text = new TranslatedCombinedValues($this->mockMetaModel('en', 'en'), [], $connection, $manipulator);
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues', $text);
+        $this->assertInstanceOf(
+            'MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\TranslatedCombinedValues',
+            $text
+        );
     }
-
 
     /**
      * Mock the database connection.

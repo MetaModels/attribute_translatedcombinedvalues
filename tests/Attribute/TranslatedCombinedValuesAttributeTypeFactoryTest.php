@@ -12,6 +12,7 @@
  *
  * @package    MetaModels/attribute_translatedcombinedvalues
  * @author     David Molineus <david.molineus@netzmacht.de>
+ * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
@@ -22,6 +23,7 @@ namespace MetaModels\AttributeTranslatedCombinedValuesBundle\Test\Attribute;
 use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\IAttributeTypeFactory;
 use MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\AttributeTypeFactory;
+use MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\TranslatedCombinedValues;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
 use PHPUnit\Framework\TestCase;
@@ -44,22 +46,19 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends TestCase
      */
     protected function mockMetaModel($tableName, $language, $fallbackLanguage)
     {
-        $metaModel = $this->getMockForAbstractClass('MetaModels\IMetaModel');
+        $metaModel = $this->getMockForAbstractClass(IMetaModel::class);
 
         $metaModel
-            ->expects($this->any())
             ->method('getTableName')
-            ->will($this->returnValue($tableName));
+            ->willReturn($tableName);
 
         $metaModel
-            ->expects($this->any())
             ->method('getActiveLanguage')
-            ->will($this->returnValue($language));
+            ->willReturn($language);
 
         $metaModel
-            ->expects($this->any())
             ->method('getFallbackLanguage')
-            ->will($this->returnValue($fallbackLanguage));
+            ->willReturn($fallbackLanguage);
 
         return $metaModel;
     }
@@ -93,7 +92,7 @@ class TranslatedCombinedValuesAttributeTypeFactoryTest extends TestCase
             $this->mockMetaModel('mm_test', 'de', 'en')
         );
 
-        $this->assertInstanceOf('MetaModels\Attribute\TranslatedCombinedValues\TranslatedCombinedValues', $attribute);
+        $this->assertInstanceOf(TranslatedCombinedValues::class, $attribute);
     }
 
     /**
