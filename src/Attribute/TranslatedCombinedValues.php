@@ -16,20 +16,69 @@
  * @author     David Greminger <david.greminger@1up.io>
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\Attribute\TranslatedCombinedValues;
+namespace MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute;
 
+use Contao\StringUtil;
+use Contao\System;
+use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\TranslatedReference;
+use MetaModels\Helper\TableManipulator;
+use MetaModels\IMetaModel;
 
 /**
  * This is the MetaModelAttribute class for handling combined values.
  */
 class TranslatedCombinedValues extends TranslatedReference
 {
+    /**
+     * Table manipulator.
+     *
+     * @var TableManipulator
+     */
+    private $tableManipulator;
+
+    /**
+     * Instantiate an MetaModel attribute.
+     *
+     * Note that you should not use this directly but use the factory classes to instantiate attributes.
+     *
+     * @param IMetaModel            $objMetaModel     The MetaModel instance this attribute belongs to.
+     *
+     * @param array                 $arrData          The information array, for attribute information, refer to
+     *                                                documentation of table tl_metamodel_attribute and documentation
+     *                                                of the certain attribute classes for information what values are
+     *                                                understood.
+     *
+     * @param Connection            $connection       Database connection.
+     *
+     * @param TableManipulator|null $tableManipulator Table manipulator.
+     */
+    public function __construct(
+        IMetaModel $objMetaModel,
+        array $arrData = [],
+        Connection $connection = null,
+        TableManipulator $tableManipulator = null
+    ) {
+        parent::__construct($objMetaModel, $arrData, $connection);
+
+        if (null === $tableManipulator) {
+            // @codingStandardsIgnoreStart
+            @\trigger_error(
+                'Table manipulator argument is missing. Fallback will be dropped in MetaModels 3.',
+                E_USER_DEPRECATED
+            );
+            // @codingStandardsIgnoreEnd
+            $tableManipulator = System::getContainer()->get('metamodels.table_manipulator');
+        }
+        $this->tableManipulator = $tableManipulator;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -147,17 +196,15 @@ class TranslatedCombinedValues extends TranslatedReference
     {
         $strField = \trim($strField);
 
-        if (\in_array($strField, $this->getMetaModelsSystemColumns())) {
-            return true;
-        }
-
-        return false;
+        return $this->tableManipulator->isSystemColumn($strField);
     }
 
     /**
      * Returns the METAMODELS_SYSTEM_COLUMNS (replacement for super globals access).
      *
      * @return array METAMODELS_SYSTEM_COLUMNS
+     *
+     * @deprecated Method will be dropped in MetaModels 3. Use the TableManipulator instead.
      *
      * @SuppressWarnings(PHPMD.Superglobals)
      * @SuppressWarnings(PHPMD.CamelCaseVariableName)

@@ -12,33 +12,46 @@
  *
  * @package    MetaModels/attribute_translatedcombinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
- * @author     Stefan Heimes <stefan_heimes@hotmail.com>
- * @author     David Greminger <david.greminger@1up.io>
- * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\DcGeneral\Events\Table\Attribute\TranslatedCombinedValues;
+namespace MetaModels\AttributeTranslatedCombinedValuesBundle\EventListener;
 
-use MenAtWork\MultiColumnWizard\Event\GetOptionsEvent;
-use MetaModels\DcGeneral\Events\BaseSubscriber;
+use MenAtWork\MultiColumnWizardBundle\Event\GetOptionsEvent;
+use MetaModels\IFactory;
 
 /**
- * Handle events for tl_metamodel_attribute.combinedvalues_fields.field_attribute.
+ * Class GetOptionsListener
  */
-class Subscriber extends BaseSubscriber
+class GetOptionsListener
 {
     /**
-     * {@inheritdoc}
+     * MetaModel factory.
+     *
+     * @var IFactory
      */
-    protected function registerEventsInDispatcher()
+    private $factory;
+
+    /**
+     * MetaModels system columns.
+     *
+     * @var array
+     */
+    private $systemColumns;
+
+    /**
+     * GetOptionsListener constructor.
+     *
+     * @param IFactory $factory       MetaModel factory.
+     * @param array    $systemColumns System columns.
+     */
+    public function __construct(IFactory $factory, array $systemColumns)
     {
-        $this->addListener(
-            GetOptionsEvent::NAME,
-            [$this, 'getOptions']
-        );
+        $this->factory       = $factory;
+        $this->systemColumns = $systemColumns;
     }
 
     /**
@@ -94,15 +107,26 @@ class Subscriber extends BaseSubscriber
     }
 
     /**
-     * Returns the METAMODELS_SYSTEM_COLUMNS (replacement for super globals access).
+     * Returns the system columns.
      *
-     * @return array METAMODELS_SYSTEM_COLUMNS
-     *
-     * @SuppressWarnings(PHPMD.Superglobals)
-     * @SuppressWarnings(PHPMD.CamelCaseVariableName)
+     * @return array
      */
     public function getMetaModelsSystemColumns()
     {
-        return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
+        return $this->systemColumns;
+    }
+
+    /**
+     * Get the metamodel by it's id.
+     *
+     * @param int $metaModelId MetaModel id.
+     *
+     * @return \MetaModels\IMetaModel|null
+     */
+    private function getMetaModelById($metaModelId)
+    {
+        $name = $this->factory->translateIdToMetaModelName($metaModelId);
+
+        return $this->factory->getMetaModel($name);
     }
 }

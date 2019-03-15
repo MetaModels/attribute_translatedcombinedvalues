@@ -12,29 +12,15 @@
  *
  * @package    MetaModels/attribute_translatedcombinedvalues
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
+ * @author     Stefan Heimes <stefan_heimes@hotmail.com>
+ * @author     Andreas Isaak <andy.jared@googlemail.com>
+ * @author     David Greminger <david.greminger@1up.io>
  * @author     Sven Baumann <baumann.sv@gmail.com>
+ * @author     David Molineus <david.molineus@netzmacht.de>
  * @copyright  2012-2019 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
 
-namespace MetaModels\Attribute\TranslatedCombinedValues;
-
-use MetaModels\Attribute\AbstractAttributeTypeFactory;
-
-/**
- * Attribute type factory for translated combined values attributes.
- */
-class AttributeTypeFactory extends AbstractAttributeTypeFactory
-{
-    /**
-     * {@inheritDoc}
-     */
-    public function __construct()
-    {
-        parent::__construct();
-        $this->typeName  = 'translatedcombinedvalues';
-        $this->typeIcon  = 'system/modules/metamodelsattribute_translatedcombinedvalues/html/combinedvalues.png';
-        $this->typeClass = TranslatedCombinedValues::class;
-    }
-}
+// Meta Information.
+$GLOBALS['METAMODELS']['metainformation']['allowedTitle'][] = 'translatedcombinedvalues';
