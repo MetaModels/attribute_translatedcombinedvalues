@@ -40,5 +40,9 @@ class MetaModelsAttributeTranslatedCombinedValuesExtension extends Extension
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('listeners.yml');
+
+        $managedSchemaTypeNames   = $container->getParameter('metamodels.managed-schema-type-names') ?? [];
+        $managedSchemaTypeNames[] = 'translatedcombinedvalues';
+        $container->setParameter('metamodels.managed-schema-type-names', $managedSchemaTypeNames);
     }
 }
