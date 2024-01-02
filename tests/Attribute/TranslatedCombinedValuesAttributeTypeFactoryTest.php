@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcombinedvalues.
  *
- * (c) 2012-2022 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -14,7 +14,7 @@
  * @author     David Molineus <david.molineus@netzmacht.de>
  * @author     Christian Schiffler <c.schiffler@cyberspectrum.de>
  * @author     Ingolf Steinhardt <info@e-spin.de>
- * @copyright  2012-2022 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -33,6 +33,8 @@ use PHPUnit\Framework\TestCase;
  * Test the attribute factory.
  *
  * @covers \MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\AttributeTypeFactory
+ *
+ * @SuppressWarnings(PHPMD.LongClassName)
  */
 class TranslatedCombinedValuesAttributeTypeFactoryTest extends TestCase
 {
