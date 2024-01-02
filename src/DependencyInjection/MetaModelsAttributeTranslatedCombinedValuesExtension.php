@@ -34,14 +34,17 @@ class MetaModelsAttributeTranslatedCombinedValuesExtension extends Extension
 {
     /**
      * {@inheritDoc}
+     *
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
-    public function load(array $configs, ContainerBuilder $container)
+    public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yml');
         $loader->load('listeners.yml');
 
-        $managedSchemaTypeNames   = $container->getParameter('metamodels.managed-schema-type-names') ?? [];
+        $typeNames                = $container->getParameter('metamodels.managed-schema-type-names');
+        $managedSchemaTypeNames   = \is_array($typeNames) ? $typeNames : [];
         $managedSchemaTypeNames[] = 'translatedcombinedvalues';
         $container->setParameter('metamodels.managed-schema-type-names', $managedSchemaTypeNames);
     }
