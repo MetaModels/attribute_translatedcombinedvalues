@@ -135,7 +135,8 @@ class TranslatedCombinedValues extends TranslatedReference
     public function modelSaved($objItem)
     {
         // combined values already defined and no update forced, get out!
-        if ($objItem->get($this->getColName()) && (!$this->get('force_combinedvalues'))) {
+        $value = $objItem->get($this->getColName());
+        if (\is_array($value) && !empty($value['value'] ?? null) && (!$this->get('force_combinedvalues'))) {
             return;
         }
 
