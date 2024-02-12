@@ -29,5 +29,4 @@ use Symfony\Component\HttpKernel\Bundle\Bundle;
  */
 class MetaModelsAttributeTranslatedCombinedValuesBundle extends Bundle
 {
-
 }

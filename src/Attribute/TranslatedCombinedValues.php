@@ -3,7 +3,7 @@
 /**
  * This file is part of MetaModels/attribute_translatedcombinedvalues.
  *
- * (c) 2012-2019 The MetaModels team.
+ * (c) 2012-2024 The MetaModels team.
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -17,7 +17,7 @@
  * @author     Sven Baumann <baumann.sv@gmail.com>
  * @author     Ingolf Steinhardt <info@e-spin.de>
  * @author     David Molineus <david.molineus@netzmacht.de>
- * @copyright  2012-2019 The MetaModels team.
+ * @copyright  2012-2024 The MetaModels team.
  * @license    https://github.com/MetaModels/attribute_translatedcombinedvalues/blob/master/LICENSE LGPL-3.0-or-later
  * @filesource
  */
@@ -41,7 +41,7 @@ class TranslatedCombinedValues extends TranslatedReference
      *
      * @var TableManipulator
      */
-    private $tableManipulator;
+    private TableManipulator $tableManipulator;
 
     /**
      * Instantiate an MetaModel attribute.
@@ -49,14 +49,11 @@ class TranslatedCombinedValues extends TranslatedReference
      * Note that you should not use this directly but use the factory classes to instantiate attributes.
      *
      * @param IMetaModel            $objMetaModel     The MetaModel instance this attribute belongs to.
-     *
      * @param array                 $arrData          The information array, for attribute information, refer to
      *                                                documentation of table tl_metamodel_attribute and documentation
      *                                                of the certain attribute classes for information what values are
      *                                                understood.
-     *
-     * @param Connection            $connection       Database connection.
-     *
+     * @param Connection|null       $connection       Database connection.
      * @param TableManipulator|null $tableManipulator Table manipulator.
      */
     public function __construct(
@@ -75,6 +72,7 @@ class TranslatedCombinedValues extends TranslatedReference
             );
             // @codingStandardsIgnoreEnd
             $tableManipulator = System::getContainer()->get('metamodels.table_manipulator');
+            assert($tableManipulator instanceof TableManipulator);
         }
         $this->tableManipulator = $tableManipulator;
     }
@@ -131,16 +129,19 @@ class TranslatedCombinedValues extends TranslatedReference
 
     /**
      * {@inheritdoc}
+     *
+     * @SuppressWarnings(PHPMD.LongVariable)
      */
     public function modelSaved($objItem)
     {
         // combined values already defined and no update forced, get out!
-        if ($objItem->get($this->getColName()) && (!$this->get('force_combinedvalues'))) {
+        $value = $objItem->get($this->getColName());
+        if (\is_array($value) && !empty($value['value'] ?? null) && (!$this->get('force_combinedvalues'))) {
             return;
         }
 
         $arrCombinedValues = [];
-        foreach (\deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
+        foreach (StringUtil::deserialize($this->get('combinedvalues_fields')) as $strAttribute) {
             if ($this->isMetaField($strAttribute['field_attribute'])) {
                 $strField            = $strAttribute['field_attribute'];
                 $arrCombinedValues[] = $objItem->get($strField);
@@ -157,18 +158,20 @@ class TranslatedCombinedValues extends TranslatedReference
         // and the model accordingly.
         if ($this->get('isunique')) {
             // ensure uniqueness.
+            /** @psalm-suppress DeprecatedMethod */
             $strLanguage           = $this->getMetaModel()->getActiveLanguage();
             $strBaseCombinedValues = $strCombinedValues;
             $arrIds                = [$objItem->get('id')];
             $intCount              = 2;
             while (\array_diff($this->searchForInLanguages($strCombinedValues, [$strLanguage]), $arrIds)) {
                 $intCount++;
-                $strCombinedValues = $strBaseCombinedValues .' ('.$intCount.')';
+                $strCombinedValues = $strBaseCombinedValues . ' (' . $intCount . ')';
             }
         }
 
         $arrData = $this->widgetToValue($strCombinedValues, $objItem->get('id'));
 
+        /** @psalm-suppress DeprecatedMethod */
         $this->setTranslatedDataFor([$objItem->get('id') => $arrData], $this->getMetaModel()->getActiveLanguage());
         $objItem->set($this->getColName(), $arrData);
     }
@@ -178,7 +181,7 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     public function get($strKey)
     {
-        if ($strKey == 'force_alias') {
+        if ($strKey === 'force_alias') {
             $strKey = 'force_combinedvalues';
         }
 
