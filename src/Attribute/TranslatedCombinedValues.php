@@ -30,6 +30,15 @@ use Doctrine\DBAL\Connection;
 use MetaModels\Attribute\TranslatedReference;
 use MetaModels\Helper\TableManipulator;
 use MetaModels\IMetaModel;
+use MetaModels\ITranslatedMetaModel;
+use RuntimeException;
+
+use function array_diff;
+use function array_merge;
+use function is_array;
+use function trigger_error;
+use function trim;
+use function vsprintf;
 
 /**
  * This is the MetaModelAttribute class for handling combined values.
@@ -66,7 +75,7 @@ class TranslatedCombinedValues extends TranslatedReference
 
         if (null === $tableManipulator) {
             // @codingStandardsIgnoreStart
-            @\trigger_error(
+            @trigger_error(
                 'Table manipulator argument is missing. Fallback will be dropped in MetaModels 3.',
                 E_USER_DEPRECATED
             );
@@ -90,7 +99,7 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     public function getAttributeSettingNames()
     {
-        return \array_merge(
+        return array_merge(
             parent::getAttributeSettingNames(),
             [
                 'combinedvalues_fields',
@@ -136,7 +145,7 @@ class TranslatedCombinedValues extends TranslatedReference
     {
         // combined values already defined and no update forced, get out!
         $value = $objItem->get($this->getColName());
-        if (\is_array($value) && !empty($value['value'] ?? null) && (!$this->get('force_combinedvalues'))) {
+        if (is_array($value) && !((bool) ($value['value'] ?? false)) && !((bool) $this->get('force_combinedvalues'))) {
             return;
         }
 
@@ -151,28 +160,28 @@ class TranslatedCombinedValues extends TranslatedReference
             }
         }
 
-        $strCombinedValues = \vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
-        $strCombinedValues = \trim($strCombinedValues);
+        $strCombinedValues = vsprintf($this->get('combinedvalues_format'), $arrCombinedValues);
+        $strCombinedValues = trim($strCombinedValues);
+
+        $metaModel      = $this->getMetaModel();
+        $activeLanguage = $this->getActiveLanguage($metaModel);
+        assert('' !== $activeLanguage);
 
         // we need to fetch the attribute values for all attribs in the combinedvalues_fields and update the database
         // and the model accordingly.
         if ($this->get('isunique')) {
             // ensure uniqueness.
-            /** @psalm-suppress DeprecatedMethod */
-            $strLanguage           = $this->getMetaModel()->getActiveLanguage();
             $strBaseCombinedValues = $strCombinedValues;
             $arrIds                = [$objItem->get('id')];
             $intCount              = 2;
-            while (\array_diff($this->searchForInLanguages($strCombinedValues, [$strLanguage]), $arrIds)) {
+            while (array_diff($this->searchForInLanguages($strCombinedValues, [$activeLanguage]), $arrIds)) {
                 $intCount++;
                 $strCombinedValues = $strBaseCombinedValues . ' (' . $intCount . ')';
             }
         }
 
         $arrData = $this->widgetToValue($strCombinedValues, $objItem->get('id'));
-
-        /** @psalm-suppress DeprecatedMethod */
-        $this->setTranslatedDataFor([$objItem->get('id') => $arrData], $this->getMetaModel()->getActiveLanguage());
+        $this->setTranslatedDataFor([$objItem->get('id') => $arrData], $activeLanguage);
         $objItem->set($this->getColName(), $arrData);
     }
 
@@ -197,7 +206,7 @@ class TranslatedCombinedValues extends TranslatedReference
      */
     protected function isMetaField($strField)
     {
-        $strField = \trim($strField);
+        $strField = trim($strField);
 
         return $this->tableManipulator->isSystemColumn($strField);
     }
@@ -215,5 +224,19 @@ class TranslatedCombinedValues extends TranslatedReference
     public function getMetaModelsSystemColumns()
     {
         return $GLOBALS['METAMODELS_SYSTEM_COLUMNS'];
+    }
+
+    /**
+     * @psalm-suppress DeprecatedMethod
+     */
+    private function getActiveLanguage(mixed $metaModel): string
+    {
+        if ($metaModel instanceof ITranslatedMetaModel) {
+            return $metaModel->getLanguage();
+        }
+        if ($metaModel->isTranslated(false)) {
+            return $metaModel->getActiveLanguage(false);
+        }
+        throw new RuntimeException('How shall I save to an untranslated MetaModel?');
     }
 }
