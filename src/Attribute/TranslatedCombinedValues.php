@@ -174,7 +174,7 @@ class TranslatedCombinedValues extends TranslatedReference
             $strBaseCombinedValues = $strCombinedValues;
             $arrIds                = [$objItem->get('id')];
             $intCount              = 2;
-            while (array_diff($this->searchForInLanguages($strCombinedValues, [$activeLanguage]), $arrIds)) {
+            while (array_diff((array) $this->searchForInLanguages($strCombinedValues, [$activeLanguage]), $arrIds)) {
                 $intCount++;
                 $strCombinedValues = $strBaseCombinedValues . ' (' . $intCount . ')';
             }
