@@ -1,8 +1,14 @@
 services:
-    metamodels.attribute_translatedcombinedvalues.factory:
-        class: MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\AttributeTypeFactory
-        arguments:
-            - '@database_connection'
-            - '@metamodels.table_manipulator'
-        tags:
-          - { name: metamodels.attribute_factory }
+  metamodels.attribute_translatedcombinedvalues.factory:
+    class: MetaModels\AttributeTranslatedCombinedValuesBundle\Attribute\AttributeTypeFactory
+    arguments:
+      - '@database_connection'
+      - '@metamodels.table_manipulator'
+    tags:
+      - { name: metamodels.attribute_factory }
+
+  MetaModels\AttributeTranslatedCombinedValuesBundle\Migration\FindUniqueInVariantsMigration:
+    arguments:
+      - '@database_connection'
+    tags:
+      - name: contao.migration
